@@ -36,7 +36,7 @@ describe('Form', function() {
 
 describe('Form with Flux', function() {
   var testForm;
-  var actions;
+  var actions = require('../actions.jsx');
 
   beforeEach(function() {
     testForm = TestUtils.renderIntoDocument(<Form />);
@@ -45,8 +45,8 @@ describe('Form with Flux', function() {
     // so that interactions with mock can be recorded.
     // This creates a reference to the mocked store and
     // expects it to be clean
-    actions = require('../actions.jsx');
-    expect(actions.filterMap).not.toBeCalled();  // sanity check
+    actions.filterMap.mockClear();
+    expect(actions.filterMap).not.toBeCalled();
   });
 
 
