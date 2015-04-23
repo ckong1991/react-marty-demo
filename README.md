@@ -1,4 +1,7 @@
-Basic example that uses ReactJs, Marty and Google Maps API
+# ReactJs, Marty and Google Maps API
+---
+
+## Basic example that uses ReactJs, Marty and Google Maps API
 
 - Uses a select dropdown and simple buttons to interact with user
 - Upon a selection or click, an action is called by the component.
@@ -7,11 +10,26 @@ Basic example that uses ReactJs, Marty and Google Maps API
 - The top level component listens to the store and updates its props accordingly.
 - The top level component populates the props properties of all its children, and the map is updated
 
-To Run:
+## To Run:
+```
+$ pip install flask
+$ npm install
+$ webpack           # might need `npm install webpack -g`
+$ python app.py
+```
 
-- pip install flask
-- npm install
-- webpack
-- python app.py
+## To Test:
+### setup
+```
+$ npm install jest-cli --save-dev
+$ npm install babel-jest --save-dev
+```
 
-- * if webpack doesn't work, try to install globally (npm install webpack -g)
+### run it:
+```
+$ npm run test-jest
+```
+
+## Refs
+- THIS SUCKS: http://stackoverflow.com/questions/25142173/debugging-jest-test-cases-using-node-inspector
+- testing with marty: https://github.com/martyjs/marty/issues/115
