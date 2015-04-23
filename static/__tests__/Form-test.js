@@ -4,56 +4,71 @@ var __path__ = '../Form.jsx';
 // mocks aren't stubs, http://martinfowler.com/articles/mocksArentStubs.html
 
 
+// NOTE ON REQUIRE
+// There is some caching of module.exports, which gets busted for each it() block. If something is
+// required before an it block, then it will not be in that cache. Mixin requires both inside and
+// outside it() blocks can lead to unpredicable behavior. (IMO React and util libs are an ok exception)
+//
+// Rule of thumb:
+// All requires in or all requires out. All in is slower (more teardown), but more predicable.
+//
+
+
 // mark as not mocked and mocked dependencies
 jest.dontMock(__path__);
 
 // test dependencies
 var React = require('react/addons')
 var TestUtils = React.addons.TestUtils;
-var Form = require(__path__);
+
 
 describe('Form', function() {
+  var testForm;
+  var Form;
+
+  beforeEach(function() {
+    // all requires for tests should go here
+    Form = require(__path__);
+
+    // setup
+    testForm = TestUtils.renderIntoDocument(<Form />);
+  });
+
   it('has a select el', function() {
-    var testForm = TestUtils.renderIntoDocument(<Form />);
     var selectEl = TestUtils.findRenderedDOMComponentWithTag(testForm, 'select').getDOMNode();
     expect(selectEl).toBeDefined();
   });
 
   it('has a default value', function() {
-    var testForm = TestUtils.renderIntoDocument(<Form />);
     var selectEl = TestUtils.findRenderedDOMComponentWithTag(testForm, 'select').getDOMNode();
     expect(selectEl.value).toEqual('Default');
   });
 
   it('should hae 4 children', function() {
-    var testForm = TestUtils.renderIntoDocument(<Form />);
     var selectEl = TestUtils.findRenderedDOMComponentWithTag(testForm, 'select').getDOMNode();
-
     expect(selectEl.children.length).toEqual(4);
   });
-
 });
 
 describe('Form with Flux', function() {
   var testForm;
-  var actions = require('../actions.jsx');
+  var actions;
 
   beforeEach(function() {
+    // requires
+    var Form = require(__path__);
+    actions = require('../actions.jsx');
+
+    // setup
     testForm = TestUtils.renderIntoDocument(<Form />);
-
-    // NOTE:
-    // Mock should be created before component is exercised,
-    // so that interactions with mock can be recorded.
-    // This creates a reference to the mocked store, but also must be
-    // cleared between it() blocks
-    actions.filterMap.mockClear();
   });
-
 
   // Test which depend on store
   it('changes value when selected', function() {
     var selectEl = TestUtils.findRenderedDOMComponentWithTag(testForm, 'select').getDOMNode();
     var lastSelectOption = selectEl.children[3];
+    expect(actions.filterMap).not.toBeCalled();
+
 
     // Trigger change event on select el and check that call to store was made
     TestUtils.Simulate.change(selectEl, {target: {value: lastSelectOption.value}});
