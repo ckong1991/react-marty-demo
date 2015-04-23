@@ -41,12 +41,12 @@ describe('Form with Flux', function() {
   beforeEach(function() {
     testForm = TestUtils.renderIntoDocument(<Form />);
 
-    // NOTE: Mock should be created before interaction,
+    // NOTE:
+    // Mock should be created before component is exercised,
     // so that interactions with mock can be recorded.
-    // This creates a reference to the mocked store and
-    // expects it to be clean
+    // This creates a reference to the mocked store, but also must be
+    // cleared between it() blocks
     actions.filterMap.mockClear();
-    expect(actions.filterMap).not.toBeCalled();
   });
 
 
