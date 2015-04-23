@@ -1,5 +1,9 @@
 var __path__ = '../Form.jsx';
 
+// REFS:
+// mocks aren't stubs, http://martinfowler.com/articles/mocksArentStubs.html
+
+
 // mark as not mocked and mocked dependencies
 jest.dontMock(__path__);
 
@@ -31,24 +35,25 @@ describe('Form', function() {
 });
 
 describe('Form with Flux', function() {
+  var testForm;
+  var actions;
 
-  it('should run', function() {
-    expect(1).toBe(1);
-  });
-
-  // Test which depend on store
-  it('changes value when selected', function() {
-    var testForm = TestUtils.renderIntoDocument(<Form />);
-    var selectEl = TestUtils.findRenderedDOMComponentWithTag(testForm, 'select').getDOMNode();
-    var lastSelectOption = selectEl.children[3];
+  beforeEach(function() {
+    testForm = TestUtils.renderIntoDocument(<Form />);
 
     // NOTE: Mock should be created before interaction,
     // so that interactions with mock can be recorded.
     // This creates a reference to the mocked store and
     // expects it to be clean
-    var actions = require('../actions.jsx');
+    actions = require('../actions.jsx');
+    expect(actions.filterMap).not.toBeCalled();  // sanity check
+  });
 
-    expect(actions.filterMap).not.toBeCalled();
+
+  // Test which depend on store
+  it('changes value when selected', function() {
+    var selectEl = TestUtils.findRenderedDOMComponentWithTag(testForm, 'select').getDOMNode();
+    var lastSelectOption = selectEl.children[3];
 
     // Trigger change event on select el and check that call to store was made
     TestUtils.Simulate.change(selectEl, {target: {value: lastSelectOption.value}});
@@ -58,7 +63,6 @@ describe('Form with Flux', function() {
     // and not set state itself.
     expect(selectEl.value).toEqual('Third');
 
-
     // BETTER:
     // Check that the anticipated action is called with a resonable arg
     expect(actions.filterMap).toBeCalledWith('Third');
@@ -67,9 +71,6 @@ describe('Form with Flux', function() {
 
   // Ensure mocking is not being conflated between tests
   it('changes value when selected', function() {
-    var actions = require('../actions.jsx');
-
-    var testForm = TestUtils.renderIntoDocument(<Form />);
     var selectEl = TestUtils.findRenderedDOMComponentWithTag(testForm, 'select').getDOMNode();
     var lastSelectOption = selectEl.children[3];
 
