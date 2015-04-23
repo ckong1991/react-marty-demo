@@ -34,9 +34,9 @@ var DropdownMenu = React.createClass({
 			<div>
 				<select className='filter-options' value={this.state.selectValue} onChange={this.updateValue}>
 					<option value='Default'>None</option>
-				    <option value='First'>First</option>
-				    <option value='Second'>Second</option>
-				    <option value='Third'>Third</option>
+			    <option value='First'>First</option>
+			    <option value='Second'>Second</option>
+			    <option value='Third'>Third</option>
 				</select>
 				<button type='button' onClick={this.clearMap}>Clear Map</button>
 				<button type='button' onClick={this.addMarker}>Add Random Marker</button>
